@@ -841,6 +841,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e601c3d2-8a37-4fb6-b25a-18cd4e934502
     m_ActionName: 'Player 2/Shoot[/Keyboard/ctrl]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6702171b-bd59-428c-9d91-34353a0270ed
+    m_ActionName: 'Player 2/Meele[/Keyboard/alt]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player 2
@@ -951,6 +955,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420030}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1076,6 +1081,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d1fc6a063aa29545880733847206d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player1: {fileID: 1174641067}
+  player2: {fileID: 457379269}
+  baseZoom: 1
+  minZoom: 5
+  maxZoom: 2
+  zoomThreshold: 10
+  maxPlayerDistance: 20
+  zoomSmoothSpeed: 2
+  smoothSpeed: 0.125
+  minX: -16
+  maxX: 16
+  minY: -9
+  maxY: 9
 --- !u!1 &609549289
 GameObject:
   m_ObjectHideFlags: 0
@@ -1427,8 +1457,8 @@ Transform:
   m_GameObject: {fileID: 719570786}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0017, y: 0.0089, z: 0}
-  m_LocalScale: {x: 0.9325, y: 0.9372, z: 1}
+  m_LocalPosition: {x: 0.21, y: 0.16, z: 0}
+  m_LocalScale: {x: 1.7020819, y: 1.7106608, z: 1.8252889}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2008,6 +2038,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e601c3d2-8a37-4fb6-b25a-18cd4e934502
     m_ActionName: 'Player 2/Shoot[/Keyboard/ctrl]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6702171b-bd59-428c-9d91-34353a0270ed
+    m_ActionName: 'Player 2/Meele[/Keyboard/alt]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player 1

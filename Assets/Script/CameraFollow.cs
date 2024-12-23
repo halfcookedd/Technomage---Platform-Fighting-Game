@@ -2,18 +2,36 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform player1; // Referensi ke Player 1
-    [SerializeField] private Transform player2; // Referensi ke Player 2
-    [SerializeField] private float minZoom = 5f; // Zoom minimum
-    [SerializeField] private float maxZoom = 15f; // Zoom maksimum
-    [SerializeField] private float zoomLimiter = 10f; // Pengatur kecepatan zoom
-    [SerializeField] private float smoothSpeed = 0.125f; // Kecepatan smoothing
+    [Header("Player References")]
+    [SerializeField] private Transform player1;
+    [SerializeField] private Transform player2;
+
+    [Header("Zoom Settings")]
+    [SerializeField] private float baseZoom = 1f;
+    [SerializeField] private float minZoom = 5f;
+    [SerializeField] private float maxZoom = 4f;
+    [SerializeField] private float zoomThreshold = 10f;
+    [SerializeField] private float maxPlayerDistance = 20f;
+    [SerializeField] private float zoomSmoothSpeed = 2f;
+
+    [Header("Movement Settings")]
+    [SerializeField] private float smoothSpeed = 0.125f;
+    
+    [Header("Camera Bounds")]
+    [SerializeField] private float minX = -10f; // Batas kiri
+    [SerializeField] private float maxX = 10f;  // Batas kanan
+    [SerializeField] private float minY = -5f;  // Batas bawah
+    [SerializeField] private float maxY = 5f;   // Batas atas
 
     private Camera cam;
+    private float halfHeight;
+    private float halfWidth;
 
     void Start()
     {
-        cam = GetComponent<Camera>(); // Ambil komponen Camera
+        cam = GetComponent<Camera>();
+        cam.orthographicSize = baseZoom;
+        UpdateCameraBounds();
     }
 
     void LateUpdate()
@@ -21,31 +39,71 @@ public class CameraFollow : MonoBehaviour
         if (player1 == null || player2 == null)
             return;
 
+        UpdateCameraBounds();
         MoveCamera();
         AdjustZoom();
     }
 
+    void UpdateCameraBounds()
+    {
+        // Update camera dimensions
+        halfHeight = cam.orthographicSize;
+        halfWidth = halfHeight * cam.aspect;
+    }
+
     void MoveCamera()
     {
-        // Posisi tengah antara kedua pemain
         Vector3 centerPoint = (player1.position + player2.position) / 2f;
-
-        // Posisi target kamera
         Vector3 newPosition = new Vector3(centerPoint.x, centerPoint.y, transform.position.z);
 
-        // Gerakkan kamera secara halus ke posisi target
+        // Batasi posisi kamera dengan memperhitungkan ukuran viewport kamera
+        newPosition.x = Mathf.Clamp(newPosition.x, minX + halfWidth, maxX - halfWidth);
+        newPosition.y = Mathf.Clamp(newPosition.y, minY + halfHeight, maxY - halfHeight);
+
+        // Gerakkan kamera dengan smooth
         transform.position = Vector3.Lerp(transform.position, newPosition, smoothSpeed);
     }
 
     void AdjustZoom()
     {
-        // Hitung jarak antara kedua pemain
         float distance = Vector3.Distance(player1.position, player2.position);
+        float targetZoom;
 
-        // Hitung ukuran kamera (zoom level)
-        float newZoom = Mathf.Lerp(maxZoom, minZoom, distance / zoomLimiter);
+        if (distance < zoomThreshold)
+        {
+            targetZoom = baseZoom;
+        }
+        else
+        {
+            float clampedDistance = Mathf.Min(distance, maxPlayerDistance);
+            float zoomFactor = (clampedDistance - zoomThreshold) / (maxPlayerDistance - zoomThreshold);
+            targetZoom = Mathf.Lerp(baseZoom, maxZoom, zoomFactor);
+        }
 
-        // Atur zoom secara halus
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, newZoom, Time.deltaTime);
+        targetZoom = Mathf.Clamp(targetZoom, minZoom, maxZoom);
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomSmoothSpeed);
+        
+        // Update bounds setelah zoom berubah
+        UpdateCameraBounds();
+    }
+
+    // Method untuk mengatur batas kamera dari script lain
+    public void SetCameraBounds(float leftBound, float rightBound, float bottomBound, float topBound)
+    {
+        minX = leftBound;
+        maxX = rightBound;
+        minY = bottomBound;
+        maxY = topBound;
+    }
+
+    // Method untuk visualisasi batas kamera di editor
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        // Gambar rectangle untuk menunjukkan batas kamera
+        Gizmos.DrawLine(new Vector3(minX, minY, 0), new Vector3(maxX, minY, 0));
+        Gizmos.DrawLine(new Vector3(maxX, minY, 0), new Vector3(maxX, maxY, 0));
+        Gizmos.DrawLine(new Vector3(maxX, maxY, 0), new Vector3(minX, maxY, 0));
+        Gizmos.DrawLine(new Vector3(minX, maxY, 0), new Vector3(minX, minY, 0));
     }
 }

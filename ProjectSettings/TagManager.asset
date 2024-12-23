@@ -8,6 +8,7 @@ TagManager:
   - OneWayPlatform
   - Player 1
   - Player 2
+  - Audio
   layers:
   - Default
   - TransparentFX

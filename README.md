@@ -1,1 +1,1 @@
-# Technomage---Platform-Fighting-Game
+# Technomage Platform Fighting Game

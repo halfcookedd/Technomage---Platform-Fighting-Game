@@ -11,6 +11,13 @@ public class PlayerAttack : MonoBehaviour
     private float lastShootTime; // Waktu terakhir peluru ditembakkan
     private Animator anim; // Referensi ke Animator
 
+    AudioManager audioManager;
+
+    void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
     void Start()
     {
         anim = GetComponent<Animator>(); // Inisialisasi Animator
@@ -21,6 +28,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (context.performed && Time.time >= lastShootTime + shootCooldown)
         {
+            audioManager.PlaySFX(audioManager.meeleSound);
             // Jalankan animasi serangan jarak dekat
             anim.SetTrigger("isMelee");
 
@@ -36,6 +44,8 @@ public class PlayerAttack : MonoBehaviour
     {
         if (context.performed && Time.time >= lastShootTime + shootCooldown)
         {
+            audioManager.PlaySFX(audioManager.shootSound);
+
             // Jalankan animasi serangan jarak jauh
             anim.SetTrigger("isRange");
 

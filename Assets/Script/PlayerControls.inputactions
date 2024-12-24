@@ -240,7 +240,7 @@
                 {
                     "name": "",
                     "id": "0028b286-b75e-4896-8946-6b8d14270499",
-                    "path": "<Keyboard>/ctrl",
+                    "path": "<Keyboard>/period",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -251,7 +251,7 @@
                 {
                     "name": "",
                     "id": "ca183c81-b771-4f68-9bd1-7d41e1682406",
-                    "path": "<Keyboard>/alt",
+                    "path": "<Keyboard>/comma",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

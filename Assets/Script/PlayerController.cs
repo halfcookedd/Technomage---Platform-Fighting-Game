@@ -112,8 +112,8 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
                 doubleJump = !doubleJump;
+                audioManager.PlaySFX(audioManager.jumpSound);
             }
-            audioManager.PlaySFX(audioManager.jumpSound);
         }
 
         if (context.canceled && rb.linearVelocity.y > 0f)
